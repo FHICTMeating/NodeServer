@@ -9,6 +9,9 @@
       "dev": "nodemon server.js"
     }
   },
+  "engines": {
+    "node": "10.x"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/FHICTMeating/NodeServer.git"
