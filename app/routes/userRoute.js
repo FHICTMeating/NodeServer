@@ -1,5 +1,6 @@
 var User = require('../models/userModel');
 var colorTool = require('../colors/groupsingleton');
+var lobbyTool = require('../lobbies/lobbyController');
 
 module.exports = function(router) {
 
@@ -8,7 +9,6 @@ module.exports = function(router) {
         let user = new User();
         user.color = colorTool.getGroup();
         user.present = false;
-
         user.save(function (err) {
             if (err){
                 res.json(err);
@@ -26,7 +26,10 @@ module.exports = function(router) {
             if (err){
                 res.json(err);
             }else{
+                console.log(user);
                 user.present = true;
+                
+                //lobbyTool.assignUserToLobby(user);
 
                 user.save(function (err) {
                     if (err) {
@@ -40,5 +43,5 @@ module.exports = function(router) {
                 });
             }
         });
-    })
+    });
 };
