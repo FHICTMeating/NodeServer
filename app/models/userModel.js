@@ -5,7 +5,7 @@ var userSchema = mongoose.Schema({
     color: String
 },  { collection: 'Users' });
 
-var User = module.exports = mongoose.model('Games', gameSchema);
+var User = module.exports = mongoose.model('Users', userSchema);
 
 module.exports.get = function (callback, limit) {
     User.find(callback).limit(limit);
