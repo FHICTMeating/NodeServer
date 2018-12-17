@@ -1,10 +1,28 @@
 //This singleton is used to divide the new users into groups
-var tools = require("./colorsenum.js");
+var User = require('../models/userModel');
+
+var tools = require("./colorsenum");
 
 let participants = 0;
 let groups = 6;//amount of desired groups, this can be 1 to 6
 
+function determineCurrentParticipants(){
+    User.count({}, function(err, c) {
+      if(err){
+        participants = 0;
+      }else{
+        participants = c;
+      }
+    });
+}
+determineCurrentParticipants();
+
+function getNextGroup(){
+  let color = tools.get(participants % groups)
+  participants++;
+  return color;
+}
+
 module.exports = {
-  increment: () => participants++,
-  getGroup: () => tools.get(participants % groups),
+  getGroup: () => getNextGroup(),
 }
