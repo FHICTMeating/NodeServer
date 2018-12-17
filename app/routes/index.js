@@ -1,5 +1,5 @@
-const registrationRoute = require('./registrationRoute');
+const userRoute = require('./userRoute');
 
 module.exports = function(app) {
-    registrationRoute(app);
+    userRoute(app);
 };
