@@ -5,7 +5,7 @@ const app            = express();
 
 const port = 8000;
 
-require('./app/routes')(app, {});
+require('./routes')(app, {});
 app.listen(port, () => {
     console.log('We are live on ' + port);
 });
