@@ -1,6 +1,7 @@
 var User = require('../models/userModel');
 var colorTool = require('../colors/groupsingleton');
 var lobbyTool = require('../lobbies/lobbyController');
+var expo = require('../expo');
 
 module.exports = function(router) {
 
@@ -39,6 +40,17 @@ module.exports = function(router) {
             });
         }
         });
+    });
+
+    router.post('/notification', function (req, res) {
+        User.getAllTokens(function(err, tokens) {
+            if (err){
+                console.log(err);
+            }else {
+                expo.sendNotification(tokens)
+            }
+        });
+
     });
 
     router.put('/isPresent/:userId', function (req, res) {
