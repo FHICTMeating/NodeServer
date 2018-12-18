@@ -25,6 +25,7 @@ module.exports = function(router) {
         let user = new User();
         const pushToken = req.body.pushToken;
 
+
         user.color = colorTool.getGroup();
         user.present = false;
         user.pushToken = pushToken;
