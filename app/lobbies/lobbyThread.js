@@ -4,6 +4,7 @@ var calls = [];
 var Lobby = require('../models/gameLobbyModel');
 var gEnum = require('./gamesenum');
 var SequenceGameModel = require('../models/sequenceGameModel');
+var PushNotifications = require('../expo');
 
 //#ToDo make a table containing statements
 var statement = "De studenten die voor Smart Mobile hebben gekozen zijn de enige studenten op het Fontys die niet uitkijken naar maatwerk";
@@ -13,6 +14,7 @@ function sequenceGame(lobby){
 
     var wordArray = statement.split(" ");
     var leader;
+    var userTokens = [];
     for (var player in lobby.participants) {
         if(player.playerRole == "Leader"){
             leader = player;
@@ -27,6 +29,7 @@ function sequenceGame(lobby){
             player.content = wordArray[myWordIndex];
             wordArray[myWordIndex] = "[x]";
         }
+        userTokens.push(player.pushID);
     }
     leader.content = wordArray.join(" ");
 
@@ -40,7 +43,7 @@ function sequenceGame(lobby){
     });
 
     //after preparing the game push a notification to all participants
-
+    PushNotifications.sendNotification(userTokens, "Start Game", "Het spel waarvoor u zich heeft ingeschreven is begonnen", "Type: sequence game");
 }
 
 module.exports.scheduleGame =  function (color, gameType){

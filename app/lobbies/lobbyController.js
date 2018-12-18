@@ -26,7 +26,7 @@ module.exports.assignUserToLobby =  function (user){
                     let currentPlayer = new Player();
                     currentPlayer.playerID = user._id;
                     currentPlayer.playerRole = "Leader";
-                    //#ToDo pushID
+                    currentPlayer.pushID = user.pushToken;
                     lobby.participants.push(currentPlayer)
                     
                     //determin gametype
@@ -40,7 +40,6 @@ module.exports.assignUserToLobby =  function (user){
                         resolve();
                     }));
         
-                    //#ToDo start the thread to start the game within 2 minutes
                     console.log('scheduling thread');
                     setTimeout(thread.scheduleGame, minutesTillStart * 60000, user.color, lobby.gameType);
                 }else{
@@ -49,7 +48,7 @@ module.exports.assignUserToLobby =  function (user){
                         let currentPlayer = new player();
                         currentPlayer.playerID = user._id;
                         currentPlayer.playerRole = "Participant";
-                        //#ToDo push ID
+                        currentPlayer.pushID = user.pushToken;
                         lobby.participants.push(currentPlayer)
         
                         calls.push(Lobby.update({_id: lobby._id}, lobby, function (err) {

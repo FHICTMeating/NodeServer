@@ -8,7 +8,7 @@ var playerSchema = mongoose.Schema({
     },*/
     playerID: String,
     playerRole: String,
-    pushID: String,
+    pushID: Object,
     content: String
 },  { collection: 'Players' });
 
