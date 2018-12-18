@@ -8,7 +8,8 @@ var playerSchema = mongoose.Schema({
     },*/
     playerID: String,
     playerRole: String,
-    pushID: String
+    pushID: String,
+    content: String
 },  { collection: 'Players' });
 
 var Player = module.exports = mongoose.model('Players', playerSchema);
