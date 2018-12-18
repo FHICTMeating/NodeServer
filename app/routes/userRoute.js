@@ -26,12 +26,17 @@ module.exports = function(router) {
             if (err){
                 res.json(err);
             }else{
-                if(user.length < 0){
+                if(user.length < 1){
                     throw "No user was found for the given ID"; 
                 }
                 user[0].present = true;
 
-                //lobbyTool.assignUserToLobby(user);
+                try{
+                lobbyTool.assignUserToLobby(user[0]);
+                }catch (error){
+                    console.log("error caught in userRoute");
+                    res.json(err);
+                }
 
                 User.update({_id: user[0]._id}, user[0], function (err) {
                     if (err) {
