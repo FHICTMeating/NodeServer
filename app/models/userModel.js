@@ -28,3 +28,7 @@ module.exports.getByColor = function (color, callback) {
 module.exports.getAllTokens = function (callback) {
     User.find({}, 'pushToken', callback);
 };
+
+module.exports.getAllTokens = function (color, callback) {
+    User.find({color: color}, 'pushToken', callback);
+};

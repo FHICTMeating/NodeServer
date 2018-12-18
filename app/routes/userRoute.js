@@ -47,7 +47,7 @@ module.exports = function(router) {
             if (err){
                 console.log(err);
             }else {
-                expo.sendNotification(tokens)
+                expo.sendNotification(tokens, "The game is on!", "Open the app to get your first assignment", {gameStart: true})
             }
         });
 

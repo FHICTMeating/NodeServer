@@ -6,7 +6,7 @@ const { Expo } = require('expo-server-sdk')
 // Create the messages that you want to send to clents
 let messages = [];
 
-module.exports.sendNotification = (tokens) => {
+module.exports.sendNotification = (tokens, title, body, data) => {
     let expo = new Expo();
     for (let pushToken of tokens) {
         // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
@@ -21,9 +21,9 @@ module.exports.sendNotification = (tokens) => {
         messages.push({
             to: token,
             sound: 'default',
-            title: "The game is on!",
-            body: 'Open the app to get your first assignment',
-            data: { gameStart: true},
+            title: title,
+            body: body,
+            data: data,
         })
     }
 
