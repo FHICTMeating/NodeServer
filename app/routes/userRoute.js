@@ -39,7 +39,6 @@ module.exports = function(router) {
 
     router.put('/isPresent/:userId', function (req, res) {
         User.findById(req.params.userId, function (err, user) {
-            console.log("TTTTTTTTere");
             if (err){
                 res.json(err);
             }else{
@@ -49,7 +48,6 @@ module.exports = function(router) {
                 user[0].present = true;
 
                 lobbyTool.assignUserToLobby(user[0], res).then(() => {
-                    console.log("Huzzah!");
                     User.update({_id: user[0]._id}, user[0], function (err) {
                         if (err) {
                             res.json(err);

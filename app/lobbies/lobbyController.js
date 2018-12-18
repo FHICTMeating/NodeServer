@@ -1,9 +1,11 @@
 var async = require('async');
 var calls = [];
 
-var minutesTillStart = 5;//after the first user checks in the game should start after x minutes
+var minutesTillStart = 1;//after the first user checks in the game should start after x minutes
 var Lobby = require('../models/gameLobbyModel');
-
+var gameEnum = require('./gamesenum');
+var Player = require('../models/playerModel');
+var thread = require('./lobbyThread');
 
 module.exports.assignUserToLobby =  function (user){
     //Does the current Lobby exist?
@@ -20,8 +22,15 @@ module.exports.assignUserToLobby =  function (user){
                     lobby = new Lobby();
                     lobby.color = user.color;
                     lobby.startTime = timestamp + (minutesTillStart * 60000);//add the extra minutes
-                    lobby.participants.push(user._id)
-        
+
+                    let currentPlayer = new Player();
+                    currentPlayer.playerID = user._id;
+                    currentPlayer.playerRole = "Leader";
+                    //#ToDo pushID
+                    lobby.participants.push(currentPlayer)
+                    
+                    //determin gametype
+                    lobby.gameType = gameEnum.getRandomType();
 
                     calls.push(lobby.save(function (err) {
                         if (err){
@@ -32,10 +41,16 @@ module.exports.assignUserToLobby =  function (user){
                     }));
         
                     //#ToDo start the thread to start the game within 2 minutes
+                    console.log('scheduling thread');
+                    setTimeout(thread.scheduleGame, minutesTillStart * 60000, user.color, lobby.gameType);
                 }else{
                     lobby = lobby[0];
                     if(lobby.startTime > Date.now()){
-                        lobby.participants.push(user._id);
+                        let currentPlayer = new player();
+                        currentPlayer.playerID = user._id;
+                        currentPlayer.playerRole = "Participant";
+                        //#ToDo push ID
+                        lobby.participants.push(currentPlayer)
         
                         calls.push(Lobby.update({_id: lobby._id}, lobby, function (err) {
                             if (err) {
