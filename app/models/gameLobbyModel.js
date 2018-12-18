@@ -14,6 +14,6 @@ var gameLobbySchema = mongoose.Schema({
 
 var GameLobby = module.exports = mongoose.model('GameLobbies', gameLobbySchema);
 
-module.exports.getByColor = function (color, callback) {
-    GameLobby.find({color: color}, callback);
+module.exports.getByColor = function (color) {
+    return GameLobby.find({color: color});
 };
