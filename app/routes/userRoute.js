@@ -26,12 +26,14 @@ module.exports = function(router) {
             if (err){
                 res.json(err);
             }else{
-                console.log(user);
-                user.present = true;
-                
+                if(user.length < 0){
+                    throw "No user was found for the given ID"; 
+                }
+                user[0].present = true;
+
                 //lobbyTool.assignUserToLobby(user);
 
-                user.save(function (err) {
+                User.update({_id: user[0]._id}, user[0], function (err) {
                     if (err) {
                         res.json(err);
                     } else {
