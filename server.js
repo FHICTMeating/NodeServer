@@ -7,7 +7,7 @@ const app            = express();
 mongoose.connect('mongodb://meating:maatwerk1@ds135844.mlab.com:35844/ic');
 const db = mongoose.connection;
 
-var port = process.env.PORT || 3030;
+var port = process.env.PORT || 3000;
 
 require('./app/routes')(app);
 app.listen(port, () => {
