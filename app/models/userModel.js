@@ -7,7 +7,8 @@ var userSchema = mongoose.Schema({
         auto: true
     },*/
     color: String,
-    present: Boolean
+    present: Boolean,
+    pushToken: String,
 },  { collection: 'Users' });
 
 var User = module.exports = mongoose.model('Users', userSchema);
