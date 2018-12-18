@@ -1,6 +1,7 @@
 var User = require('../models/userModel');
 var colorTool = require('../colors/groupsingleton');
 var lobbyTool = require('../lobbies/lobbyController');
+var expo = require('../expo');
 
 module.exports = function(router) {
 
@@ -23,8 +24,12 @@ module.exports = function(router) {
     
     router.post('/register', function (req, res){
         let user = new User();
+        const pushToken = req.body.pushToken;
+
+
         user.color = colorTool.getGroup();
         user.present = false;
+        user.pushToken = pushToken;
         user.save(function (err) {
             if (err){
                 res.json(err);
@@ -35,6 +40,17 @@ module.exports = function(router) {
             });
         }
         });
+    });
+
+    router.post('/notification', function (req, res) {
+        User.getAllTokens(function(err, tokens) {
+            if (err){
+                console.log(err);
+            }else {
+                expo.sendNotification(tokens, "The game is on!", "Open the app to get your first assignment", {gameStart: true})
+            }
+        });
+
     });
 
     router.put('/isPresent/:userId', function (req, res) {
