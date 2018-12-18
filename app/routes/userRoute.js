@@ -23,8 +23,11 @@ module.exports = function(router) {
     
     router.post('/register', function (req, res){
         let user = new User();
+        const pushToken = req.body.pushToken;
+
         user.color = colorTool.getGroup();
         user.present = false;
+        user.pushToken = pushToken;
         user.save(function (err) {
             if (err){
                 res.json(err);
