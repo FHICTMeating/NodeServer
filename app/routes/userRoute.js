@@ -4,8 +4,24 @@ var lobbyTool = require('../lobbies/lobbyController');
 
 module.exports = function(router) {
 
-    //GET all applications
-    router.get('/register', function (req, res){
+    router.get('/register/:userId', function(req, res) {
+        User.findById(req.params.userId, function (err, user) {
+            if (err){
+                res.status(500);
+                res.json(err);
+            }else{
+                console.log(user);
+                if(user.length > 0) {
+                    res.status(204);
+                } else {
+                    res.status(404);
+                }
+                res.send();
+            }
+        });
+    });
+    
+    router.post('/register', function (req, res){
         let user = new User();
         user.color = colorTool.getGroup();
         user.present = false;
