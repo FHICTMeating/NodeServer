@@ -8,7 +8,7 @@ var userSchema = mongoose.Schema({
     },*/
     color: String,
     present: Boolean,
-    pushToken: String,
+    pushToken: Object,
 },  { collection: 'Users' });
 
 var User = module.exports = mongoose.model('Users', userSchema);
@@ -25,7 +25,7 @@ module.exports.getByColor = function (color, callback) {
     User.find({color: color}, callback);
 };
 
-module.exports.getAllTokens = function (callback) {
+module.exports.getTokens = function (callback) {    
     User.find({}, 'pushToken', callback);
 };
 
