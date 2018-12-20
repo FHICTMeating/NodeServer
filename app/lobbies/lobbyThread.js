@@ -30,7 +30,7 @@ function sequenceGame(lobby){
         }
         player.content = contentArray.join(" ");
 
-        userTokens.push(player.pushID);
+        userTokens.push({pushToken: player.pushID});
     }
 
     var game = new SequenceGameModel();
@@ -40,12 +40,12 @@ function sequenceGame(lobby){
         if(err){
             console.log(err);
         }else{
-            console.log('scheduled the sequence game! ', game);
+            
         }
     });
 
     //after preparing the game push a notification to all participants
-    PushNotifications.sendNotification(userTokens, "Start Game", "Het spel waarvoor u zich heeft ingeschreven is begonnen", "Type: sequence game");
+    PushNotifications.sendNotification(userTokens, "The game is on!", "Open the app to get your first challenge!", {Type: 'sequence game'});
 }
 
 module.exports.scheduleGame =  function (color, gameType){
@@ -56,7 +56,7 @@ module.exports.scheduleGame =  function (color, gameType){
         lobby = result;
         lobby = lobby[0][0];
         if(lobby.gameType == gEnum.get(0).key){
-            console.log(lobby);
+            
             sequenceGame(lobby);
         }
     });
