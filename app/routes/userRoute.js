@@ -43,11 +43,11 @@ module.exports = function(router) {
     });
 
     router.post('/notification', function (req, res) {
-        User.getAllTokens(function(err, tokens) {
+        User.getTokens(function(err, tokens) {
             if (err){
                 console.log(err);
             }else {
-                expo.sendNotification(tokens, "The game is on!", "Open the app to get your first assignment", {gameStart: true})
+                expo.sendNotification(tokens, "A game is ready", "Click here to see the timer. You will get another notification when the game is ready", {gameStart: true})
             }
         });
 
