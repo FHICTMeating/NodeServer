@@ -1,8 +1,6 @@
 var async = require('async');
 var calls = [];
 
-//var moment = require('moment-timezone');
-
 var minutesTillStart = 1;//after the first user checks in the game should start after x minutes
 var Lobby = require('../models/gameLobbyModel');
 var gameEnum = require('./gamesenum');
@@ -20,10 +18,6 @@ module.exports.assignUserToLobby =  function (user){
                 
                 if (lobby.length == 0){
                     //Create the lobby with the close time within the next 'minutesTillStart' minutes.
-                    /*let timestamp = moment.tz(Date.now(), "Europe/Amsterdam");//time in seconds
-                    console.log(timestamp);
-                    console.log(timestamp.format());
-                    console.log(new Date(timestamp.format()));*/
                     let timestamp = Date.now() + 60000 * 60;//add an hour
 
                     lobby = new Lobby();
