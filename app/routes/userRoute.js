@@ -11,7 +11,6 @@ module.exports = function(router) {
                 res.status(500);
                 res.json(err);
             }else{
-                console.log(user);
                 if(user.length > 0) {
                     res.status(204);
                 } else {
