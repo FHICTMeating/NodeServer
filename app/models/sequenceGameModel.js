@@ -10,4 +10,8 @@ var sequenceGameSchema = mongoose.Schema({
     participants: []
 },  { collection: 'SequenceGames' });
 
-var GameLobby = module.exports = mongoose.model('SequenceGames', sequenceGameSchema);
+var SequenceGameLobby = module.exports = mongoose.model('SequenceGames', sequenceGameSchema);
+
+module.exports.findById = function (sequenceGameId, callback) {
+    SequenceGameLobby.find({_id: sequenceGameId}, callback)
+};
