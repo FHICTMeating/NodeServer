@@ -5,7 +5,7 @@ var Enum = require('enum');
 require('enum').register();
  
 //define enum type without flag
-var myEnum = new Enum({'Yellow': 0, 'Red':1, 'Blue': 2, 'Green': 3, 'Purple': 4, 'Orange': 5});
+var myEnum = new Enum({'Green': 0, 'Red':1, 'Blue': 2, 'Yellow': 3, 'Purple': 4, 'Orange': 5});
 myEnum;
 myEnum.isFlaggable; //=> false
  

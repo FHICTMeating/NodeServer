@@ -7,7 +7,9 @@ const { Expo } = require('expo-server-sdk')
 let messages = [];
 
 module.exports.sendNotification = (tokens, title, body, data) => {
+
     let expo = new Expo();
+    messages = [];
     for (let pushToken of tokens) {
         // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
         let token = pushToken.pushToken;

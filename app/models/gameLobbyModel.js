@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var gamesEnum = require("../lobbies/gamesenum");
 
 var gameLobbySchema = mongoose.Schema({
     /*_id: { type: mongoose.Schema.Types.ObjectId,
@@ -9,6 +10,7 @@ var gameLobbySchema = mongoose.Schema({
     color: String,
     gameType: String,
     startTime: Date,
+    gameType: String,
     participants: []
 },  { collection: 'GameLobbies' });
 

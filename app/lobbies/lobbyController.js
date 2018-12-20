@@ -1,9 +1,11 @@
 var async = require('async');
 var calls = [];
 
-var minutesTillStart = 5;//after the first user checks in the game should start after x minutes
+var minutesTillStart = 1;//after the first user checks in the game should start after x minutes
 var Lobby = require('../models/gameLobbyModel');
-
+var gameEnum = require('./gamesenum');
+var Player = require('../models/playerModel');
+var thread = require('./lobbyThread');
 
 module.exports.assignUserToLobby =  function (user){
     //Does the current Lobby exist?
@@ -12,44 +14,53 @@ module.exports.assignUserToLobby =  function (user){
         calls.push(Lobby.getByColor(user.color));
     
         Promise.all(calls).then((result) => {
-                lobby = result[0];
-                
-                if (lobby.length == 0){
-                    //Create the lobby with the close time within the next 'minutesTillStart' minutes.
-                    let timestamp = Date.now()//time in seconds
-                    lobby = new Lobby();
-                    lobby.color = user.color;
-                    lobby.startTime = timestamp + (minutesTillStart * 60000);//add the extra minutes
-                    lobby.participants.push(user._id)
-        
+            lobby = result[0];
+            
+            if (lobby.length == 0){
+                //Create the lobby with the close time within the next 'minutesTillStart' minutes.
+                let timestamp = Date.now();
 
-                    calls.push(lobby.save(function (err) {
-                        if (err){
+                lobby = new Lobby();
+                lobby.color = user.color;
+                lobby.startTime = timestamp + (minutesTillStart * 60000);//add the extra minutes
+
+                let currentPlayer = new Player();
+                currentPlayer.playerID = user._id;
+                currentPlayer.playerRole = "Leader";
+                currentPlayer.pushID = user.pushToken;
+                lobby.participants.push(currentPlayer)
+                
+                //determin gametype
+                lobby.gameType = gameEnum.getRandomType();
+
+                calls.push(lobby.save(function (err) {
+                    if (err){
+                        throw err;
+                    }
+                    
+                    setTimeout(thread.scheduleGame, minutesTillStart * 60000, user.color, lobby.gameType);
+                    resolve(lobby.startTime);
+                }));
+            }else{
+                lobby = lobby[0];
+                if(lobby.startTime >Date.now()){
+                    let currentPlayer = new Player();
+                    currentPlayer.playerID = user._id;
+                    currentPlayer.playerRole = "Participant";
+                    currentPlayer.pushID = user.pushToken;
+                    lobby.participants.push(currentPlayer)
+    
+                    calls.push(Lobby.update({_id: lobby._id}, lobby, function (err) {
+                        if (err) {
                             throw err;
                         }
-                        
-                        resolve();
+                        resolve(lobby.startTime);
                     }));
-        
-                    //#ToDo start the thread to start the game within 2 minutes
                 }else{
-                    lobby = lobby[0];
-                    if(lobby.startTime > Date.now()){
-                        lobby.participants.push(user._id);
-        
-                        calls.push(Lobby.update({_id: lobby._id}, lobby, function (err) {
-                            if (err) {
-                                throw err;
-                            }
-
-                            resolve();
-                        }));
-                    }else{
-                        //user was too late.
-                        reject("Game has already started");
-                    }
+                    //user was too late.
+                    reject("Game has already started");
                 }
-        
+            }
         })
     });
     
