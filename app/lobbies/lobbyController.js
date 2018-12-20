@@ -38,13 +38,13 @@ module.exports.assignUserToLobby =  function (user){
                             throw err;
                         }
                         
-                        //setTimeout(thread.scheduleGame, minutesTillStart * 60000, user.color, lobby.gameType);
+                        setTimeout(thread.scheduleGame, minutesTillStart * 60000, user.color, lobby.gameType);
                         resolve(lobby.startTime);
                     }));
                 }else{
                     lobby = lobby[0];
                     if(lobby.startTime >Date.now() + 60000 * 60){
-                        let currentPlayer = new player();
+                        let currentPlayer = new Player();
                         currentPlayer.playerID = user._id;
                         currentPlayer.playerRole = "Participant";
                         currentPlayer.pushID = user.pushToken;

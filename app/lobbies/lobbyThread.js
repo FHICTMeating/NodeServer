@@ -10,12 +10,13 @@ var PushNotifications = require('../expo');
 var statement = "De studenten die voor Smart Mobile hebben gekozen zijn de enige studenten op het Fontys die niet uitkijken naar maatwerk";
 
 function sequenceGame(lobby){
-    console.log('scheduled the sequence game!');
-
+    console.log('starting sequence game');
+    console.log(lobby);
     var wordArray = statement.split(" ");
     var leader;
     var userTokens = [];
-    for (var player in lobby.participants) {
+    for (var player of lobby.participants) {
+        console.log('current player: ', player);
         if(player.playerRole == "Leader"){
             leader = player;
         }else{
@@ -36,9 +37,12 @@ function sequenceGame(lobby){
     var game = new SequenceGameModel();
     game.originalMessage = statement;
     game.participants = lobby.participants;
+    console.log("game: ", game);
     game.save(function (err) {
         if(err){
             console.log(err);
+        }else{
+            console.log('scheduled the sequence game!');
         }
     });
 
@@ -47,15 +51,14 @@ function sequenceGame(lobby){
 }
 
 module.exports.scheduleGame =  function (color, gameType){
-    console.log('in thread ', color, ' ', gameType);
     //The game started get the player count
     calls.push(Lobby.getByColor(color));
 
     Promise.all(calls).then((result) => {
         lobby = result;
         lobby = lobby[0][0];
-
         if(lobby.gameType == gEnum.get(0).key){
+            console.log(lobby);
             sequenceGame(lobby);
         }
     });
