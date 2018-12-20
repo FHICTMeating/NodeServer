@@ -1,6 +1,8 @@
 var async = require('async');
 var calls = [];
 
+//var moment = require('moment-timezone');
+
 var minutesTillStart = 1;//after the first user checks in the game should start after x minutes
 var Lobby = require('../models/gameLobbyModel');
 var gameEnum = require('./gamesenum');
@@ -18,7 +20,12 @@ module.exports.assignUserToLobby =  function (user){
                 
                 if (lobby.length == 0){
                     //Create the lobby with the close time within the next 'minutesTillStart' minutes.
-                    let timestamp = Date.now()//time in seconds
+                    /*let timestamp = moment.tz(Date.now(), "Europe/Amsterdam");//time in seconds
+                    console.log(timestamp);
+                    console.log(timestamp.format());
+                    console.log(new Date(timestamp.format()));*/
+                    let timestamp = Date.now() + 60000 * 60;//add an hour
+
                     lobby = new Lobby();
                     lobby.color = user.color;
                     lobby.startTime = timestamp + (minutesTillStart * 60000);//add the extra minutes
@@ -37,14 +44,12 @@ module.exports.assignUserToLobby =  function (user){
                             throw err;
                         }
                         
-                        resolve();
+                        //setTimeout(thread.scheduleGame, minutesTillStart * 60000, user.color, lobby.gameType);
+                        resolve(lobby.startTime);
                     }));
-        
-                    console.log('scheduling thread');
-                    setTimeout(thread.scheduleGame, minutesTillStart * 60000, user.color, lobby.gameType);
                 }else{
                     lobby = lobby[0];
-                    if(lobby.startTime > Date.now()){
+                    if(lobby.startTime >Date.now() + 60000 * 60){
                         let currentPlayer = new player();
                         currentPlayer.playerID = user._id;
                         currentPlayer.playerRole = "Participant";
@@ -55,8 +60,7 @@ module.exports.assignUserToLobby =  function (user){
                             if (err) {
                                 throw err;
                             }
-
-                            resolve();
+                            resolve(lobby.startTime);
                         }));
                     }else{
                         //user was too late.

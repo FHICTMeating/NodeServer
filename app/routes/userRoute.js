@@ -59,18 +59,18 @@ module.exports = function(router) {
                 res.json(err);
             }else{
                 if(user.length < 1){
-                    throw "No user was found for the given ID"; 
+                    res.json("No user was found for the given ID");
                 }
                 user[0].present = true;
 
-                lobbyTool.assignUserToLobby(user[0], res).then(() => {
+                lobbyTool.assignUserToLobby(user[0], res).then((result) => {
                     User.update({_id: user[0]._id}, user[0], function (err) {
                         if (err) {
                             res.json(err);
-                        } else {
+                        }else{
                             res.json({
                                 message: 'Game joined and user updated',
-                                data: user
+                                data: result
                             });
                         }
                     });
