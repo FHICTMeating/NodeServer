@@ -10,39 +10,37 @@ var PushNotifications = require('../expo');
 var statement = "De studenten die voor Smart Mobile hebben gekozen zijn de enige studenten op het Fontys die niet uitkijken naar maatwerk";
 
 function sequenceGame(lobby){
-    console.log('starting sequence game');
-    console.log(lobby);
     var wordArray = statement.split(" ");
     var leader;
     var userTokens = [];
+    let playerCount = lobby.participants.length;
+    let leaderWordCount = playerCount + (wordArray.length % playerCount);
+    var index = 0;
     for (var player of lobby.participants) {
-        console.log('current player: ', player);
+        var contentArray = [];
+        var amount = 0;
         if(player.playerRole == "Leader"){
-            leader = player;
+            amount = leaderWordCount;
         }else{
-            let myWordIndex = Math.floor(Math.random() * wordArray.length)
-
-            //#ToDo do shuffle method instead of this, this can create an inf loop
-            while(wordArray[myWordIndex] == "[x]"){
-                myWordIndex = Math.floor(Math.random() * wordArray.length)
-            }
-
-            player.content = wordArray[myWordIndex];
-            wordArray[myWordIndex] = "[x]";
+            amount = playerCount;
         }
+        for (i = 0; i < amount; i++) { 
+            contentArray.push(wordArray[index])
+            index++;
+        }
+        player.content = contentArray.join(" ");
+
         userTokens.push(player.pushID);
     }
-    leader.content = wordArray.join(" ");
 
     var game = new SequenceGameModel();
     game.originalMessage = statement;
     game.participants = lobby.participants;
-    console.log("game: ", game);
     game.save(function (err) {
         if(err){
             console.log(err);
         }else{
-            console.log('scheduled the sequence game!');
+            console.log('scheduled the sequence game! ', game);
         }
     });
 
