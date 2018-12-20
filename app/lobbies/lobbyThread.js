@@ -15,6 +15,7 @@ function sequenceGame(lobby){
     var userTokens = [];
     let playerCount = lobby.participants.length;
     let leaderWordCount = playerCount + (wordArray.length % playerCount);
+    let participantWordCount = (wordArray.length - (wordArray.length % playerCount)) / playerCount;
     var index = 0;
     for (var player of lobby.participants) {
         var contentArray = [];
@@ -22,7 +23,7 @@ function sequenceGame(lobby){
         if(player.playerRole == "Leader"){
             amount = leaderWordCount;
         }else{
-            amount = playerCount;
+            amount = participantWordCount;
         }
         for (i = 0; i < amount; i++) { 
             contentArray.push(wordArray[index])
