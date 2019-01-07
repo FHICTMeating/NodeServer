@@ -43,11 +43,10 @@ function sequenceGame(lobby){
     var game = new SequenceGameModel();
     game.originalMessage = statement;
     game.participants = lobby.participants;
+    game.solved = false;
     game.save(function (err) {
         if(err){
             console.log(err);
-        }else{
-            
         }
     });
 

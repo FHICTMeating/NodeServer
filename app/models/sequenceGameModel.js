@@ -7,6 +7,8 @@ var sequenceGameSchema = mongoose.Schema({
         auto: true
     },*/
     originalMessage: String,
+    answer: String,
+    solved: Boolean,
     participants: []
 },  { collection: 'SequenceGames' });
 
