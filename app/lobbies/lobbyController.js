@@ -1,7 +1,7 @@
 var async = require('async');
 var calls = [];
 
-var minutesTillStart = 5;//after the first user checks in the game should start after x minutes
+var minutesTillStart = 1;//after the first user checks in the game should start after x minutes
 var Lobby = require('../models/gameLobbyModel');
 var gameEnum = require('./gamesenum');
 var Player = require('../models/playerModel');
