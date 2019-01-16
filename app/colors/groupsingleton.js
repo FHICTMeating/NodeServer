@@ -4,7 +4,7 @@ var User = require('../models/userModel');
 var tools = require("./colorsenum");
 
 let participants = 0;
-let groups = 1;//amount of desired groups, this can be 1 to 6
+let groups = 4;//amount of desired groups, this can be 1 to 6
 
 function determineCurrentParticipants(){
     User.count({}, function(err, c) {
